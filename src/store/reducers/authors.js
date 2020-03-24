@@ -1,35 +1,38 @@
-import * as actionTypes from "../actions/actionTypes";
+import {
+  SET_AUTHOR_DETAIL,
+  SET_AUTHOR_LOADING,
+  ADD_BOOK
+} from "../actions/actionTypes";
 
 const initialState = {
-  authors: [],
-  filteredAuthors: [],
+  author: null,
   loading: true
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.FETCH_AUTHORS:
+    case SET_AUTHOR_DETAIL:
       return {
         ...state,
-        authors: action.payload,
-        filteredAuthors: action.payload,
+        author: action.payload,
         loading: false
       };
 
-    case actionTypes.FILTER_AUTHORS:
+    case SET_AUTHOR_LOADING:
       return {
         ...state,
-        filteredAuthors: state.authors.filter(author => {
-          return `${author.first_name} ${author.last_name}`
-            .toLowerCase()
-            .includes(action.payload);
-        })
+        loading: true
       };
-    case actionTypes.POST_AUTHOR:
+
+    case ADD_BOOK:
       return {
         ...state,
-        authors: [action.payload].concat(state.authors)
+        author: {
+          ...state.author,
+          books: state.author.books.concat(action.payload)
+        }
       };
+
     default:
       return state;
   }
